@@ -12,7 +12,7 @@ class FarmIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FarmersProfile(),
+      home: HomePage(),
     );
   }
 }
