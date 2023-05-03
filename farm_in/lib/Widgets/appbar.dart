@@ -31,7 +31,7 @@ class FarmInAppBar extends StatelessWidget implements PreferredSizeWidget {
         "Farm In",
       ),
       foregroundColor: Colors.black,
-      backgroundColor: const Color.fromARGB(255, 117, 255, 142),
+      backgroundColor: Colors.green,
     );
   }
 

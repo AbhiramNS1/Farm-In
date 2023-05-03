@@ -1,3 +1,4 @@
+import 'package:farm_in/Pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -50,7 +51,7 @@ class LoginPageState extends State<LoginPage> {
                   children: [
                     const Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.contact_emergency),
+                      child: Icon(Icons.account_circle_outlined),
                     ),
                     Expanded(
                         child: TextField(
@@ -66,7 +67,7 @@ class LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: Color.fromARGB(228, 251, 253, 255),
+                  color: const Color.fromARGB(228, 251, 253, 255),
                 ),
                 child: Row(
                   children: [
@@ -99,7 +100,12 @@ class LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(

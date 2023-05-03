@@ -1,0 +1,4 @@
+dbpass.file
+node_modules
+dist
+.env

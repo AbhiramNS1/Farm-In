@@ -1,5 +1,7 @@
 import 'package:farm_in/Models/realtime.dart';
+import 'package:farm_in/Pages/farmers_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailedScreen extends StatelessWidget {
   const DetailedScreen({super.key});
@@ -46,8 +48,14 @@ class SummaryView extends StatelessWidget {
           Container(
             margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
             padding: const EdgeInsets.all(20),
-            decoration:
-                const BoxDecoration(color: Color.fromARGB(255, 167, 255, 199)),
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 167, 255, 199),
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(2, 2),
+                      color: Color.fromARGB(24, 0, 0, 0),
+                      blurRadius: 2),
+                ]),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -65,7 +73,12 @@ class SummaryView extends StatelessWidget {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.green)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FarmersProfile()));
+                      },
                       child: const Text("Visit farmer's profile")),
                 )
               ],
@@ -81,8 +94,14 @@ class SummaryView extends StatelessWidget {
           Container(
             margin: EdgeInsets.symmetric(vertical: 20, horizontal: 8),
             padding: EdgeInsets.all(20),
-            decoration:
-                BoxDecoration(color: Color.fromARGB(255, 167, 255, 199)),
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 167, 255, 199),
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(2, 2),
+                      color: Color.fromARGB(24, 0, 0, 0),
+                      blurRadius: 2),
+                ]),
             child: Column(
               children: [
                 const Text(
@@ -97,7 +116,18 @@ class SummaryView extends StatelessWidget {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.green)),
-                    onPressed: () {},
+                    onPressed: () async {
+                      var lat = 8.8786;
+
+                      var lon = 76.7094;
+                      final url = Uri(
+                        scheme: 'https',
+                        host: 'www.google.com',
+                        path: '/maps/search/',
+                        queryParameters: {'api': '1', 'query': '$lat,$lon'},
+                      );
+                      await launchUrl(url);
+                    },
                     child: const Text("Show location in GMap"))
               ],
             ),
@@ -118,7 +148,7 @@ class SummaryView extends StatelessWidget {
 Widget InfoRow(String title, String value) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Row(
+    child: Wrap(
       children: [
         Text(
           title,
@@ -129,7 +159,7 @@ Widget InfoRow(String title, String value) {
           style: const TextStyle(
             fontSize: 17,
           ),
-        ),
+        )
       ],
     ),
   );
@@ -210,6 +240,9 @@ class InfoCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 14),
       decoration: BoxDecoration(
           color: Color.fromARGB(255, 167, 255, 199),
+          boxShadow: [
+            BoxShadow(blurRadius: 2, color: Color.fromARGB(63, 0, 0, 0))
+          ],
           borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [
@@ -299,7 +332,11 @@ class OptionsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(color: Color.fromARGB(255, 167, 255, 199)),
+      decoration: BoxDecoration(
+          color: Color.fromARGB(255, 167, 255, 199),
+          boxShadow: [
+            BoxShadow(blurRadius: 2, color: Color.fromARGB(63, 0, 0, 0))
+          ]),
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(15),
       child: Column(
