@@ -1,5 +1,9 @@
 import 'package:farm_in/Pages/home_page.dart';
+import 'package:farm_in/main.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,9 +13,35 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final _pcontroller = TextEditingController();
-  final _ucontroller = TextEditingController();
+  final _pcontroller = TextEditingController(text: "password123");
+  final _ucontroller = TextEditingController(text: "john.doe@gmail.com");
   var isPasswordVisible = false;
+
+  void signIn(Object payload, BuildContext context) async {
+    try {
+      final url = Uri.parse('http://$server/users/login');
+      final res = await http.post(url, body: payload);
+
+      if (res.statusCode == 200) {
+        Map<String, dynamic> data = json.decode(res.body);
+        if (data["token"] != null) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('jwtToken', data["token"]);
+          await prefs.setBool('isLoggedIn', true);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomePage()));
+        }
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Invalid request')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unable to reach server')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +87,7 @@ class LoginPageState extends State<LoginPage> {
                         child: TextField(
                       controller: _ucontroller,
                       decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: "Username"),
+                          border: InputBorder.none, hintText: "Email"),
                     ))
                   ],
                 ),
@@ -101,10 +131,10 @@ class LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.only(top: 20.0),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                  signIn({
+                    "username": _ucontroller.text,
+                    "password": _pcontroller.text
+                  }, context);
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),

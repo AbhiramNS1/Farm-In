@@ -1,11 +1,18 @@
 import 'dart:ui';
 
+import 'package:farm_in/Pages/buying_page.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class FarmersProfile extends StatelessWidget {
-  static const int avatharSize = 140;
+class FarmersProfile extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _FarmersProfileState();
+}
 
+class _FarmersProfileState extends State<FarmersProfile> {
+  static const int avatharSize = 140;
+  String text = "follow";
+  int followers = 100;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -63,28 +70,6 @@ class FarmersProfile extends StatelessWidget {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   SizedBox(
-                                    width: 130,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStatePropertyAll(
-                                                  Color.fromARGB(
-                                                      255, 17, 191, 104))),
-                                      onPressed: () {
-                                        // Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) =>
-                                        //             MessageSendingPage()));
-                                      },
-                                      child: const Text(
-                                        "Message",
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 17),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
                                       width: 130,
                                       child: ElevatedButton(
                                           style: ButtonStyle(
@@ -92,19 +77,29 @@ class FarmersProfile extends StatelessWidget {
                                                   MaterialStatePropertyAll(
                                                       Color.fromARGB(
                                                           255, 17, 191, 104))),
-                                          onPressed: () {},
-                                          child: const Text(
-                                            "Follow",
+                                          onPressed: () {
+                                            setState(() {
+                                              if (text == "follow") {
+                                                text = "following";
+                                                followers++;
+                                              } else {
+                                                text = "follow";
+                                                followers--;
+                                              }
+                                            });
+                                          },
+                                          child: Text(
+                                            text,
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 17),
                                           )))
                                 ],
                               ),
-                              const Padding(
+                              Padding(
                                 padding: EdgeInsets.only(top: 10, bottom: 12),
                                 child: Text(
-                                  "100 followers",
+                                  "$followers followers",
                                   style: TextStyle(fontSize: 16, shadows: [
                                     Shadow(
                                         color: Color.fromRGBO(0, 0, 0, 0.45),
@@ -125,7 +120,7 @@ class FarmersProfile extends StatelessWidget {
                                         offset: Offset(0, 4),
                                       )
                                     ]),
-                                child: Column(
+                                child: const Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -175,7 +170,18 @@ class FarmersProfile extends StatelessWidget {
                                 dataLabelSettings:
                                     DataLabelSettings(isVisible: true))
                           ],
-                        )
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Text(
+                            "Profit Ananlysis based on Crops ",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 300,
+                            child: chartToRun())
                       ],
                     )))));
   }
@@ -219,9 +225,9 @@ class Data {
 }
 
 final data = [
-  Data(2010, 5),
-  Data(2013, 10),
-  Data(2016, 15),
-  Data(2020, 14),
-  Data(2023, 25),
+  Data(2010, 3),
+  Data(2013, 4),
+  Data(2016, 5),
+  Data(2020, 3),
+  Data(2023, 6),
 ];

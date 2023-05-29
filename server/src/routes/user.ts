@@ -1,15 +1,24 @@
-import express from 'express'
-import DataBase from '../db/database.js'
+import express from "express"
+import { Request} from "express";
+import db from '../libs/database.js'
+import { Security } from '../libs/security.js'
 
-const router = express.Router()
+const userRouter = express.Router()
 
-router.get("/",(req,res)=>{
-    DataBase.getInstance().isVaildUser("XXXXX","admin").then(data=>{}).catch(err=>{})
-    res.send("index")
+
+userRouter.post("/login",async (req,res)=>{
+    const {username,password}=req.body
+    const result = await db.ValidateUser(username,password)
+    res.json(result)
 })
 
-router.get("/new",(req,res)=>{
-    res.send("new")
+userRouter.use(Security.AuthenticateUser)
+
+userRouter.post("/auth",async (req:Request,res)=>{
+    res.send(req.user) 
 })
 
-export default router
+
+userRouter.post("/userdetails")
+
+export default userRouter

@@ -4,9 +4,9 @@ services:
     # build: ./server
     # container_name: expserver
     # ports:
-    #   - 8080:10000
+    #   - 5000:5000
   db:
-    image: mysql
+    build: ./database
     container_name: mysqlserver
     expose:
       - '3306'

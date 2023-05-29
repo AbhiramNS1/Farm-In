@@ -1,19 +1,35 @@
-import 'package:farm_in/Pages/detailed_screen.dart';
-import 'package:farm_in/Pages/farmers_profile.dart';
+import 'package:farm_in/Pages/home_page.dart';
 import 'package:farm_in/Pages/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Pages/home_page.dart';
+var server = "192.168.31.100:5000";
 
 void main() {
   runApp(FarmIn());
 }
 
 class FarmIn extends StatelessWidget {
+  Future<bool> isLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
-    );
+        home: FutureBuilder<bool>(
+      future: isLoggedIn(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data!) {
+            return HomePage();
+          } else {
+            return LoginPage();
+          }
+        } else
+          return Center(child: CircularProgressIndicator());
+      },
+    ));
   }
 }

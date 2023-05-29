@@ -1,5 +1,5 @@
 name: farm_in
-description: A new Flutter project.
+description: A placement application.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -32,6 +32,12 @@ dependencies:
     sdk: flutter
   syncfusion_flutter_charts: ^21.1.41
   url_launcher: ^6.1.10
+  http: ^0.13.6
+  shared_preferences: ^2.1.1
+  flutter_charts: ^0.5.1
+  timelines: ^0.1.0
+  web3dart: ^2.6.1
+  ethers: ^0.0.1+3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,6 +47,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
 
 
 
@@ -68,6 +75,7 @@ flutter:
     - assets/images/items/carrot.png
     - assets/images/items/bg.png
     - assets/images/items/farmer.png
+    - assets/abi/Storage.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
