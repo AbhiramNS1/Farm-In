@@ -1,5 +1,5 @@
-const Store = artifacts.require("Storage");
+const Assets= artifacts.require("InvestorAssets");
 
 module.exports = function(deployer) {
-  deployer.deploy(Store);
+  deployer.deploy(Assets);
 };

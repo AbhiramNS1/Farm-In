@@ -82,6 +82,9 @@ class PortfolioState extends State<Portfolio> {
           })(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.data == null || snapshot.data!.length <= 0) {
+                return Center(child: CircularProgressIndicator());
+              }
               return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {

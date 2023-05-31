@@ -13,12 +13,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final _pcontroller = TextEditingController(text: "password123");
-  final _ucontroller = TextEditingController(text: "john.doe@gmail.com");
+  final _pcontroller = TextEditingController(text: "");
+  final _ucontroller = TextEditingController(text: "");
   var isPasswordVisible = false;
-
+  var isLoading = false;
   void signIn(Object payload, BuildContext context) async {
     try {
+      setState(() {
+        isLoading = true;
+      });
+
       final url = Uri.parse('http://$server/users/login');
       final res = await http.post(url, body: payload);
 
@@ -143,7 +147,13 @@ class LoginPageState extends State<LoginPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                 )),
-          )
+          ),
+          if (isLoading)
+            Container(
+              width: 300,
+              height: 300,
+              child: Center(child: CircularProgressIndicator()),
+            )
         ])),
       ),
     );

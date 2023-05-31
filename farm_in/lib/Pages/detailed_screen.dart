@@ -100,6 +100,7 @@ class StateSummary extends State<SummaryView> {
               body: {"token": token, 'pick_id': widget.pick.id.toString()});
           if (res.statusCode == 200) {
             var jsondata = json.decode(res.body);
+            print(jsondata);
             for (var i in jsondata?[1]) {
               similarPicks.add(Picks.holdingsFromJson(i));
             }

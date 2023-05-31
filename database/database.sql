@@ -16,9 +16,9 @@ CREATE TABLE Investors (
 INSERT INTO Investors (name, email, password_hash, wallet_address,  total_invested_amount,holdings)
 VALUES
     ('Abhiram', 'abhiramns@gmail.com', 'password123', '0x1234567890abcdef', 10000,1000),
-    ('Abhijith', 'abhijith@gmail.com', 'password456', '0xabcdef1234567890',20000, 2500),
-    ('HariKrishnan', 'harikrishnan@gmail.com', 'password789', '0x4567890abcdef123',32000, 5000),
-    ('Anagha', 'anaghar@gmail.com', 'passwordabc', '0x7890abcdef123456', 45000,7500),
+    ('Abhijith', 'abhijith@gmail.com', 'password123', '0xabcdef1234567890',20000, 2500),
+    ('HariKrishnan', 'harikrishnan@gmail.com', 'password123', '0x4567890abcdef123',32000, 5000),
+    ('Anagha', 'anaghar@gmail.com', 'password123', '0x7890abcdef123456', 45000,7500),
     ('David Brown', 'david.brown@gmail.com', 'passworddef', '0x90abcdef12345678',54000, 1500),
     ('Emily Davis', 'emily.davis@gmail.com', 'passwordegh', '0xabcdef1234567890',300000, 30000),
     ('Matthew Taylor', 'matthew.taylor@geci.com', 'passwordhij', '0xdef1234567890abc',450000, 5000),

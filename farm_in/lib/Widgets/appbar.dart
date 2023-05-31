@@ -1,3 +1,4 @@
+import 'package:farm_in/Pages/settings.dart';
 import 'package:flutter/material.dart';
 
 class FarmInAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -10,16 +11,8 @@ class FarmInAppBar extends StatelessWidget implements PreferredSizeWidget {
         InkWell(
           child: Icon(Icons.settings),
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Conform'),
-                duration: Duration(seconds: 2),
-                action: SnackBarAction(
-                  label: 'Go to settings',
-                  onPressed: () {},
-                ),
-              ),
-            );
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => SettingsPage()));
           },
         ),
       ],

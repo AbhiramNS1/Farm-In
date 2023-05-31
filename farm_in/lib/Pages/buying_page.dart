@@ -1,13 +1,13 @@
 import 'package:farm_in/Models/picks.dart';
 import 'package:farm_in/Widgets/success.dart';
 import 'package:farm_in/Widgets/time_line.dart';
+import 'package:farm_in/blockchain/web3main.dart';
 import 'package:flutter_charts/flutter_charts.dart';
 import 'package:http/http.dart' as http;
 import 'package:farm_in/Widgets/appbar.dart';
 import 'package:farm_in/Widgets/quantity_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timelines/timelines.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 
@@ -23,12 +23,12 @@ class BuyingPage extends StatefulWidget {
 }
 
 class BuyingState extends State<BuyingPage> {
-  int totalCropQtyAvailable = 0;
-  int totalAmountRequested = 0;
-  int totalArea = 0;
+  int totalCropQtyAvailable = 10;
+  int totalAmountRequested = 100000;
+  int totalArea = 1000;
   String address = "";
-  int latitude = 0;
-  int longitude = 0;
+  int latitude = 9;
+  int longitude = 75;
   int qty = 1;
   int totalPrice = 0;
   final TextEditingController _controller = TextEditingController(text: "1");
@@ -37,6 +37,31 @@ class BuyingState extends State<BuyingPage> {
   void initState() {
     totalPrice = widget.pick.todaysPrice;
     super.initState();
+    (() async {
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('jwtToken');
+        final url = Uri.parse('http://$server/picks/summary');
+        final res = await http.post(url,
+            body: {"token": token, 'pick_id': widget.pick.id.toString()});
+        if (res.statusCode == 200) {
+          var jsondata = json.decode(res.body);
+
+          Map<String, dynamic> data = jsondata?[0] ?? {};
+
+          setState(() {
+            totalArea = data["area"];
+            address = data["address"];
+            totalCropQtyAvailable = data["total_qty"];
+            totalAmountRequested = data["total_amount"];
+            latitude = data["latitude"];
+            longitude = data["longitude"];
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
+    })();
   }
 
   @override
@@ -190,6 +215,12 @@ class BuyingState extends State<BuyingPage> {
                                 Navigator.of(context).pop();
                                 if (res.statusCode == 200) {
                                   Map result = json.decode(res.body);
+                                  if (updateBlockChain) {
+                                    var blockchain = BlockChainAsset();
+                                    await blockchain.connect();
+                                    await blockchain.addAsset(AssetInBlockChain(
+                                        10, 20, 10, qty, totalPrice));
+                                  }
 
                                   if (result["status"] != null) {
                                     showDialog(

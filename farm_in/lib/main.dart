@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var server = "192.168.31.100:5000";
+var updateBlockChain = false;
 
 void main() {
   runApp(FarmIn());

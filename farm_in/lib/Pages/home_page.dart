@@ -74,13 +74,6 @@ class HomepageState extends State<HomePage> {
               icon: Icon(Icons.shopping_bag_rounded), label: "holdings")
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        var storage = Storage();
-        await storage.init();
-        await storage.setNumber(300);
-        var a = await storage.getNumber();
-        print(a);
-      }),
     );
   }
 }
@@ -148,6 +141,9 @@ Widget ListOfStockes() {
     return [] as List<Picks>;
   })(), builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.done) {
+      if (snapshot.data == null || snapshot.data!.length <= 0) {
+        return Center(child: CircularProgressIndicator());
+      }
       return ListView.builder(
           shrinkWrap: true,
           itemCount: snapshot.data!.length,

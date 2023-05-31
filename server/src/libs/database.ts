@@ -74,6 +74,13 @@ class DataBase {
     return {status:(result!=null)};
    }
 
+   public async getDetails(pick_id : number){
+    const result = await this.executeQuery("select * from  Requests where Requests.pick_id = ?",[pick_id])
+    result.push(await this.executeQuery("select * from Picks limit 5"));
+    return result
+
+   }
+
 }
 
 
