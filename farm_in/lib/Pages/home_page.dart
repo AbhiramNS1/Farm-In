@@ -61,10 +61,7 @@ class HomepageState extends State<HomePage> {
         currentIndex: _index,
         onTap: (val) => {
           setState(() {
-            if (_index == 0)
-              _index++;
-            else
-              _index = 0;
+            _index = val;
           })
         },
         fixedColor: Colors.green,

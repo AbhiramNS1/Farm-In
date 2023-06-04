@@ -18,6 +18,54 @@ class PortfolioState extends State<Portfolio> {
   String totalGainpercentage = "0";
   String totalGainAmount = "0";
   String totalInvestedAmount = "0";
+  bool isloading = true, nodata = false;
+  List<Picks> picks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('jwtToken');
+      final url = Uri.parse('http://$server/picks/my_holdings');
+      final res = await http.post(url, body: {"token": token});
+
+      if (res.statusCode == 200) {
+        List<dynamic> data = json.decode(res.body);
+
+        int totalAmount = 0;
+        double totalgain = 0;
+        if (data.isNotEmpty) {
+          for (int i = 0; i < data.length; i++) {
+            picks.add(Picks.holdingsFromJson(data[i]));
+            totalAmount += picks[i].totalInvested;
+            totalgain += picks[i].totalInvested *
+                double.parse(picks[i].todaysChange) /
+                100;
+          }
+          totalInvestedAmount = totalAmount.toString();
+          totalGainAmount = totalgain.toString();
+          totalGainpercentage = (totalgain * 100 / totalAmount).toString();
+        } else {
+          nodata = true;
+        }
+        isloading = false;
+        setState(() {});
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Unexpected error")));
+        print("Error =================");
+      }
+    } catch (e) {
+      print(e);
+      print("klwkm-----------------------");
+    }
+    isloading = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,88 +91,62 @@ class PortfolioState extends State<Portfolio> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Totoal invested : ${totalInvestedAmount} ₹"),
-                  Text("Total profit :${totalGainAmount} ₹")
+                  Text("Total invested : $totalInvestedAmount ₹"),
+                  Text("Total profit : $totalGainAmount ₹")
                 ],
               )
             ],
           ),
         ),
         Flexible(
-            child: FutureBuilder<List<Picks>>(
-          future: (() async {
-            try {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              String? token = prefs.getString('jwtToken');
-              final url = Uri.parse('http://$server/picks/my_holdings');
-              final res = await http.post(url, body: {"token": token});
-
-              if (res.statusCode == 200) {
-                List<dynamic> data = json.decode(res.body);
-                List<Picks> list = [];
-                int totalAmount = 0;
-                for (int i = 0; i < data.length; i++) {
-                  list.add(Picks.holdingsFromJson(data[i]));
-                  totalAmount += list[i].totalInvested;
-                }
-                totalInvestedAmount = totalAmount.toString();
-
-                return list;
-              } else {
-                print("errrorrr=================");
-              }
-            } catch (e) {
-              print(e);
-              print("klwkm-----------------------");
-            }
-
-            return [] as List<Picks>;
-          })(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.data == null || snapshot.data!.length <= 0) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return ListView.builder(
-                  itemCount: snapshot.data!.length,
+          child: isloading
+              ? (Center(
+                  child: (nodata)
+                      ? Text("No Picks in your Holdings")
+                      : CircularProgressIndicator()))
+              : ListView.builder(
+                  itemCount: picks.length,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailedScreen(
-                                    pick: snapshot.data![index])));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailedScreen(
+                              pick: picks[index],
+                            ),
+                          ),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 0.5,
-                                color: const Color.fromARGB(73, 0, 0, 0))),
+                          border: Border.all(
+                            width: 0.5,
+                            color: const Color.fromARGB(73, 0, 0, 0),
+                          ),
+                        ),
                         child: ListTile(
                           isThreeLine: true,
-                          title: Text(snapshot.data![index].symbol),
+                          title: Text(picks[index].symbol),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(snapshot.data![index].symbol),
-                              Text(
-                                  "Qty ${snapshot.data![index].quantity ?? 0}"),
+                              Text(picks[index].symbol),
+                              Text("Qty ${picks[index].quantity ?? 0}"),
                             ],
                           ),
-                          trailing: Column(children: [
-                            Text("${snapshot.data![index].todaysPrice} ₹"),
-                            Text("${snapshot.data![index].todaysChange}% ▲")
-                          ]),
+                          trailing: Column(
+                            children: [
+                              Text("${picks[index].todaysPrice} ₹"),
+                              Text("${picks[index].todaysChange}% ▲"),
+                            ],
+                          ),
                         ),
                       ),
                     );
-                  });
-            } else {
-              return const CircularProgressIndicator();
-            }
-          },
-        ))
+                  },
+                ),
+        ),
       ],
     );
   }

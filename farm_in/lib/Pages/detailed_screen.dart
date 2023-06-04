@@ -405,10 +405,10 @@ class Indicators extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(8.0),
             child: SizedBox(
                 child: Text(
@@ -444,14 +444,6 @@ class Indicators extends StatelessWidget {
                       "Average annual precipitation of around 650mm (25 inches)."),
               OptionsCard(
                   "Wind speed", " Average wind speed is around 7 km/h."),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.green)),
-                      onPressed: () {},
-                      child: Text("Learn about carrot cultivation"))),
             ],
           )
         ],

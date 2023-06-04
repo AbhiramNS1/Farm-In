@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var server = "192.168.31.100:5000";
-var updateBlockChain = false;
+var updateBlockChain = true;
+int? myid = null;
 
 void main() {
   runApp(FarmIn());
@@ -13,6 +14,9 @@ void main() {
 class FarmIn extends StatelessWidget {
   Future<bool> isLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    myid = prefs.getInt('myid');
+    print(myid);
+    // await prefs.setBool('isLoggedIn', false);
     return prefs.getBool('isLoggedIn') ?? false;
   }
 

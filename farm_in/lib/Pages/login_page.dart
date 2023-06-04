@@ -32,6 +32,9 @@ class LoginPageState extends State<LoginPage> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('jwtToken', data["token"]);
           await prefs.setBool('isLoggedIn', true);
+          print(data);
+          await prefs.setInt('myid', data["id"]);
+          myid = data["id"];
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const HomePage()));
         }
@@ -40,6 +43,7 @@ class LoginPageState extends State<LoginPage> {
             .showSnackBar(SnackBar(content: Text('Invalid request')));
       }
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Unable to reach server')),
       );

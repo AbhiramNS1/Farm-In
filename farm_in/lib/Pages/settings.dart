@@ -1,5 +1,5 @@
 import 'package:farm_in/Pages/login_page.dart';
-import 'package:farm_in/main.dart';
+import 'package:farm_in/Pages/verify_blockchain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,13 +23,18 @@ class SettingsPage extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width,
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
                         color: Color.fromARGB(209, 0, 0, 0), width: 0.3))),
           ),
           Button(context, "add a farmer", () {
-            launchUrl(Uri.parse("$server/static"));
+            launchUrl(Uri.parse(
+                "https://abhiramns1.github.io/Farm-In/server/public/"));
+          }),
+          Button(context, "verify blockchain assets", () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => AssetVerificationPage()));
           }),
           Button(context, "help", () {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -37,7 +37,7 @@ class DataBase {
     }
     
 
-   public async ValidateUser(useremail:string,password:string ):Promise<{error?:String,token?:String}>{
+   public async ValidateUser(useremail:string,password:string ):Promise<{error?:String,token?:String,id?:number}>{
         if(!(useremail && password)){
             return {error:"username or password is missing"}
         }
@@ -47,7 +47,7 @@ class DataBase {
         const result = await this.executeQuery<User>("select id,name,email from Investors where email = ? and password_hash = ? limit 1",[useremail,password])
         if(!result || result.length==0) return {error:"Invalid username or password"}
         const token = Security.generateToken({id:result[0].id,name:result[0].name,email:useremail} as User)
-        return {token}
+        return {token,id:result[0].id}
    }
    public async doesUserExist(user:User){
         const result = await this.executeQuery<User>("select count(*) from Investors where email = ? and id=? and name = ? limit 1",[user.email,user.id,user.name])

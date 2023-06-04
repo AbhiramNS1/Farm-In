@@ -215,11 +215,11 @@ class BuyingState extends State<BuyingPage> {
                                 Navigator.of(context).pop();
                                 if (res.statusCode == 200) {
                                   Map result = json.decode(res.body);
-                                  if (updateBlockChain) {
+                                  if (updateBlockChain && myid != null) {
                                     var blockchain = BlockChainAsset();
                                     await blockchain.connect();
                                     await blockchain.addAsset(AssetInBlockChain(
-                                        10, 20, 10, qty, totalPrice));
+                                        10, myid!, 10, qty, totalPrice));
                                   }
 
                                   if (result["status"] != null) {
