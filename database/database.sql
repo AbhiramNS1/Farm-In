@@ -155,16 +155,16 @@ CREATE TABLE Assets (
     CONSTRAINT fk_pick FOREIGN KEY (pick_id) REFERENCES Picks (id)
 );
 
-INSERT INTO Assets (investor_id, pick_id, contract_address,profit,qty)
-SELECT 
-    FLOOR(RAND() * 10) + 1, 
-    P.id, 
-    CONCAT('0x', LPAD(HEX(RAND()*1000000000000), 8, '0')), 
-    FLOOR(RAND() * 500) + 100,
-    FLOOR(RAND() * 500) + 10
-FROM Picks P
-ORDER BY RAND()
-LIMIT 10;
+-- INSERT INTO Assets (investor_id, pick_id, contract_address,profit,qty)
+-- SELECT 
+--     FLOOR(RAND() * 10) + 1, 
+--     P.id, 
+--     CONCAT('0x', LPAD(HEX(RAND()*1000000000000), 8, '0')), 
+--     FLOOR(RAND() * 500) + 100,
+--     FLOOR(RAND() * 500) + 10
+-- FROM Picks P
+-- ORDER BY RAND()
+-- LIMIT 10;
 
 
 -- Table: Investor_history

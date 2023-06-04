@@ -27,8 +27,8 @@ class BuyingState extends State<BuyingPage> {
   int totalAmountRequested = 100000;
   int totalArea = 1000;
   String address = "";
-  int latitude = 9;
-  int longitude = 75;
+  String latitude = "9";
+  String longitude = "78";
   int qty = 1;
   int totalPrice = 0;
   final TextEditingController _controller = TextEditingController(text: "1");

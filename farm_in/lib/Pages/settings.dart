@@ -1,6 +1,8 @@
 import 'package:farm_in/Pages/login_page.dart';
+import 'package:farm_in/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -27,8 +29,7 @@ class SettingsPage extends StatelessWidget {
                         color: Color.fromARGB(209, 0, 0, 0), width: 0.3))),
           ),
           Button(context, "add a farmer", () {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Our support team will contact you soon")));
+            launchUrl(Uri.parse("$server/static"));
           }),
           Button(context, "help", () {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
