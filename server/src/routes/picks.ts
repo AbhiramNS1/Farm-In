@@ -32,5 +32,8 @@ picksRouter.post("/details",async (req,res)=>{
     res.json(await db.getDetails(req.body.pick_id))
 })
 
+picksRouter.post("/add_crop",async (req,res)=>{
+    res.json(await db.AddPicks(req))
+})
 
 export default picksRouter

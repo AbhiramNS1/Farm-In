@@ -1,4 +1,5 @@
 import 'package:farm_in/Pages/home_page.dart';
+import 'package:farm_in/Pages/sign_up.dart';
 import 'package:farm_in/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -37,6 +38,10 @@ class LoginPageState extends State<LoginPage> {
           myid = data["id"];
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const HomePage()));
+        } else {
+          if (data["error"] != null)
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('${data["error"]}')));
         }
       } else {
         ScaffoldMessenger.of(context)
@@ -156,8 +161,15 @@ class LoginPageState extends State<LoginPage> {
             Container(
               width: 300,
               height: 300,
-              child: Center(child: CircularProgressIndicator()),
-            )
+              child: const Center(child: CircularProgressIndicator()),
+            ),
+          Padding(
+            padding: const EdgeInsets.only(top: 100),
+            child: TextButton(
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) => const SignUpPage())),
+                child: Text("New user ? Sign up")),
+          )
         ])),
       ),
     );

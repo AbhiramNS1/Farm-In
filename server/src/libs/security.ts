@@ -24,9 +24,9 @@ class Security{
     public static async AuthenticateUser(req:Request,res:Response,next:NextFunction){
         try{
             req.user = jwt.verify(req.body.token, process.env.JWT_SECRET) as User
-            if(DataBase.getInstance().doesUserExist(req.user))
+            // if(DataBase.getInstance().doesUserExist(req.user))
                 next()
-            else res.send({error:"UnAutherised access"})
+            // else res.send({error:"UnAutherised access"})
         }catch(err){
             res.send({error:"UnAutherised access"})
             return

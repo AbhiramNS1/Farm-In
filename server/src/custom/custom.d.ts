@@ -4,6 +4,7 @@ import { User } from '../libs/security';
 declare module 'express' {
   interface Request {
     user?: User
+    file?:any
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:farm_in/Pages/home_page.dart';
 import 'package:farm_in/Pages/login_page.dart';
+import 'package:farm_in/Pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -87,7 +87,7 @@ class AssetInBlockChain {
 }
 
 class BlockChainAsset {
-  final String _rpcUrl = "http://192.168.31.100:7545";
+  final String _rpcUrl = "http://192.168.240.72:7545";
   late Web3Client _client;
   late String _abiCode;
   late Credentials _credentials;

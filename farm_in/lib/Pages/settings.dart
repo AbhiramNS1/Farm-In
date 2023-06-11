@@ -13,8 +13,8 @@ class SettingsPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 179, 255, 181),
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 12),
+          const Padding(
+            padding: EdgeInsets.only(top: 8.0, left: 12),
             child: Text(
               "Settings",
               style: TextStyle(fontSize: 30),
@@ -37,11 +37,11 @@ class SettingsPage extends StatelessWidget {
                 MaterialPageRoute(builder: (ctx) => AssetVerificationPage()));
           }),
           Button(context, "help", () {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Our support team will contact you soon")));
           }),
           Button(context, "report an issue", () {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Our support team will contact you soon")));
           }),
           Button(context, "logout", () {
