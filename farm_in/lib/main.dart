@@ -1,11 +1,10 @@
 import 'package:farm_in/Pages/home_page.dart';
 import 'package:farm_in/Pages/login_page.dart';
-import 'package:farm_in/Pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var server = "192.168.31.100:5000";
-var updateBlockChain = true;
+var updateBlockChain = false;
 int? myid = null;
 
 void main() {

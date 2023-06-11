@@ -6,6 +6,7 @@ import { Route, Routes} from 'react-router-dom';
 import Checkout from './Pages/FundRequest';
 import AddCropPage from './Pages/AddCrop';
 import AddFarmLand from './Pages/AddNewFarmLand';
+import EmployeeHome from './Pages/EmployeeHome';
 
 
 export const AppRoutes = () => {
@@ -19,9 +20,10 @@ export const AppRoutes = () => {
             <Route  path="/fund_request" element={<Checkout/>}/>
             <Route  path="/add_crop" element={<AddCropPage/>}/>
             <Route  path="/add_farmland" element={<AddFarmLand/>}/>
-            
           </>
+          
           ):"")}
+          <Route path="/employee" element={(localStorage.getItem("isEmployee")) ?<EmployeeHome/>:<SignIn emp={true}/>} />
         </Routes>
       </div>
     );

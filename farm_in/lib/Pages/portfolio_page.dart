@@ -28,42 +28,37 @@ class PortfolioState extends State<Portfolio> {
   }
 
   void getData() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('jwtToken');
-      final url = Uri.parse('http://$server/picks/my_holdings');
-      final res = await http.post(url, body: {"token": token});
+    // try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('jwtToken');
+    final url = Uri.parse('http://$server/picks/my_holdings');
+    final res = await http.post(url, body: {"token": token});
 
-      if (res.statusCode == 200) {
-        List<dynamic> data = json.decode(res.body);
+    if (res.statusCode == 200) {
+      List<dynamic> data = json.decode(res.body);
 
-        int totalAmount = 0;
-        double totalgain = 0;
-        if (data.isNotEmpty) {
-          for (int i = 0; i < data.length; i++) {
-            picks.add(Picks.holdingsFromJson(data[i]));
-            totalAmount += picks[i].totalInvested;
-            totalgain += picks[i].totalInvested *
-                double.parse(picks[i].todaysChange) /
-                100;
-          }
-          totalInvestedAmount = totalAmount.toString();
-          totalGainAmount = totalgain.toString();
-          totalGainpercentage = (totalgain * 100 / totalAmount).toString();
-        } else {
-          nodata = true;
+      int totalAmount = 0;
+      double totalgain = 0;
+      if (data.isNotEmpty) {
+        for (int i = 0; i < data.length; i++) {
+          picks.add(Picks.holdingsFromJson(data[i]));
+          totalAmount += ((picks[i].price) * (picks[i].quantity ?? 1)) ?? 0;
         }
-        isloading = false;
-        setState(() {});
+        totalInvestedAmount = totalAmount.toString();
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Unexpected error")));
-        print("Error =================");
+        nodata = true;
       }
-    } catch (e) {
-      print(e);
-      print("klwkm-----------------------");
+      isloading = false;
+      setState(() {});
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Unexpected error")));
+      print("Error =================");
     }
+    // } catch (e) {
+    //   print(e);
+    //   print("klwkm-----------------------");
+    // }
     isloading = false;
   }
 
@@ -127,18 +122,17 @@ class PortfolioState extends State<Portfolio> {
                         ),
                         child: ListTile(
                           isThreeLine: true,
-                          title: Text(picks[index].symbol),
+                          title: Text(picks[index].name),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(picks[index].symbol),
+                              Text(picks[index].category ?? ""),
                               Text("Qty ${picks[index].quantity ?? 0}"),
                             ],
                           ),
                           trailing: Column(
                             children: [
-                              Text("${picks[index].todaysPrice} ₹"),
-                              Text("${picks[index].todaysChange}% ▲"),
+                              Text("${picks[index].price} ₹"),
                             ],
                           ),
                         ),

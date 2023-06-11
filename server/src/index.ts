@@ -3,6 +3,7 @@ import userRouter from './routes/user.js'
 import picksRouter from './routes/picks.js'
 import farmerRouter from './routes/farmer.js'
 import cors from 'cors'
+import empRouter from './routes/employee.js'
 
 
 
@@ -24,8 +25,7 @@ app.use((req,res,next)=>{
 app.use("/farmer",farmerRouter)
 app.use("/users",userRouter)
 app.use("/picks",picksRouter)
-
-
+app.use("/admin",empRouter)
 
 
 

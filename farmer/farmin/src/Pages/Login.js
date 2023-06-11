@@ -13,16 +13,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Config from '../Config'
+import SuccessDialog from '../Components/Dialog';
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({emp}) {
+
+  const [errorMsg,setErrorMsg]=React.useState(null)
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const res=await fetch(`${Config.SERVER}/farmer/login`, {
+    const res=await fetch(`${Config.SERVER}${emp?"/admin/login":"/farmer/login"}`, {
       method:'POST',
       headers: { 'Content-Type': 'application/json' },
       body :JSON.stringify({
@@ -32,18 +35,27 @@ export default function SignIn() {
     })
     const result= await res.json();
     console.log(result.token)
-    if(result!=null && result.token!=null){
+    if(result!=null ){
+      if(result.token!=null){
         localStorage.setItem("token",result.token)
         localStorage.setItem("id",result.id)
+        localStorage.setItem("isEmployee",true)
         localStorage.setItem("isLogedIn",true)
-        window.location.replace("/")
+        emp?window.location.replace("/employee"):window.location.reload()}
+      else if(result.error){
+          setErrorMsg(result.error)
+      }
     }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
+     
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        <SuccessDialog open={errorMsg!=null} text={errorMsg}  onClose={()=>{
+                setErrorMsg(null)
+        }} />
         <Box
           sx={{
             marginTop: 8,
@@ -56,7 +68,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Farmer - Sign in
+            {(emp)?"Admin":"Farmer"} - Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -92,10 +104,9 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-             
               <Grid item>
                 <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {(emp)?"":"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>

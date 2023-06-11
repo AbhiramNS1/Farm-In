@@ -20,6 +20,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import {Check,Cancel} from '@mui/icons-material';
 import { Button, colors } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
@@ -42,11 +43,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import { useNavigate } from 'react-router-dom';
 import AddFarmLand from '../AddNewFarmLand';
 import Config from '../../Config';
@@ -299,7 +295,7 @@ function HomeScreen(){
         Funding Requests
         </Typography>
        
-        {(requests.length ==0)?"No Requests Yet":"" }
+        {(requests?.length ==0)?"No Requests Yet":"" }
       {requests.map(e=>{
         return <div key={e.id} style={{boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.3)',padding:'10px',display:'flex',justifyContent:'space-between',alignItems:'center',margin:'5px'}}>
           <div>
@@ -310,8 +306,20 @@ function HomeScreen(){
        <b> Farmland Address </b>:<i> {e.address}</i>
        </div>
        <div style={{display:'flex' ,justifyContent:'center'}}>
-          <b>Status : pending</b>
-            <AccessTimeIcon color="yellow" />
+        {(e.state=='pending')?<>
+        <b>Status : pending</b>
+            <AccessTimeIcon color="warning" />
+        </>:
+        (e.state=='rejected')?
+        <>
+        <b>Status : rejected</b>
+            <Cancel color="error" />
+        </>:
+        <>
+        <b>Status :Approved</b>
+            <Check color="success" />
+        </>}
+          
        </div>
       
           </div>
@@ -446,6 +454,7 @@ function FundingRequests(){
        
         {(requests.length ==0)?"No Requests Yet":"" }
       {requests.map(e=>{
+        if(e.state=="approved") return 
         return <div key={e.id} style={{boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.3)',padding:'10px',display:'flex',justifyContent:'space-between',alignItems:'center',margin:'5px'}}>
           <div>
       <b> Total amount</b> : <i> {e.total_amount}</i>
@@ -455,8 +464,8 @@ function FundingRequests(){
        <b> Farmland Address </b>:<i> {e.address}</i>
        </div>
        <div style={{display:'flex' ,justifyContent:'center'}}>
-         <div> <b>Pending  </b>
-            <AccessTimeIcon color="warning" />
+         <div> <b>{e.state}  </b>
+           
             </div>
             <Button onClick={()=>{
               fetch(`${Config.SERVER}/farmer/deletePendingRequest`,{

@@ -35,32 +35,32 @@ class BuyingState extends State<BuyingPage> {
 
   @override
   void initState() {
-    totalPrice = widget.pick.todaysPrice;
+    totalPrice = widget.pick.price;
     super.initState();
     (() async {
-      try {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        String? token = prefs.getString('jwtToken');
-        final url = Uri.parse('http://$server/picks/summary');
-        final res = await http.post(url,
-            body: {"token": token, 'pick_id': widget.pick.id.toString()});
-        if (res.statusCode == 200) {
-          var jsondata = json.decode(res.body);
+      // try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('jwtToken');
+      final url = Uri.parse('http://$server/picks/summary');
+      final res = await http.post(url,
+          body: {"token": token, 'pick_id': widget.pick.id.toString()});
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
 
-          Map<String, dynamic> data = jsondata?[0] ?? {};
+        Map<String, dynamic> data = jsondata?[0] ?? {};
 
-          setState(() {
-            totalArea = data["area"];
-            address = data["address"];
-            totalCropQtyAvailable = data["total_qty"];
-            totalAmountRequested = data["total_amount"];
-            latitude = data["latitude"];
-            longitude = data["longitude"];
-          });
-        }
-      } catch (e) {
-        print(e);
+        setState(() {
+          totalArea = data["area"];
+          address = data["address"];
+          totalCropQtyAvailable = data["total_qty"];
+          totalAmountRequested = data["total_amount"];
+          latitude = data["latitude"];
+          longitude = data["longitude"];
+        });
       }
+      // } catch (e) {
+      //   print(e);
+      // }
     })();
   }
 
@@ -78,7 +78,7 @@ class BuyingState extends State<BuyingPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 13.0),
                 child: Text(
-                  "${widget.pick.name} (${widget.pick.symbol})",
+                  "${widget.pick.name} (${widget.pick.category})",
                   style: const TextStyle(
                       fontSize: 30, fontWeight: FontWeight.w700),
                 ),
@@ -86,7 +86,7 @@ class BuyingState extends State<BuyingPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 13.0),
                 child: Text(
-                  "${widget.pick.todaysPrice}₹ (${widget.pick.todaysChange}▲)",
+                  "${widget.pick.price}₹ ",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
                 ),
               ),
@@ -141,7 +141,7 @@ class BuyingState extends State<BuyingPage> {
                         onValueChanged: (val) {
                           setState(() {
                             qty = val;
-                            totalPrice = val * widget.pick.todaysPrice;
+                            totalPrice = val * widget.pick.price;
                           });
                         }),
                   ),
@@ -175,7 +175,7 @@ class BuyingState extends State<BuyingPage> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "${widget.pick.symbol}",
+                                      "${widget.pick.name}",
                                       style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
@@ -210,7 +210,7 @@ class BuyingState extends State<BuyingPage> {
                                 final res = await http.post(url, body: {
                                   "token": token,
                                   "qty": qty.toString(),
-                                  "pick_id": widget.pick.id.toString()
+                                  "crop_id": widget.pick.id.toString()
                                 });
                                 Navigator.of(context).pop();
                                 if (res.statusCode == 200) {
@@ -222,22 +222,21 @@ class BuyingState extends State<BuyingPage> {
                                         10, myid!, 10, qty, totalPrice));
                                   }
 
-                                  if (result["status"] != null) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (ctx) => SuccessDialog(
-                                            message: "Order added to portfolio",
-                                            onOkPressed: () {
-                                              Navigator.of(context).pop();
+                                  // if (result["status"] != null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => SuccessDialog(
+                                          message: "Order added to portfolio",
+                                          onOkPressed: () {
+                                            Navigator.of(context).pop();
 
-                                              setState(() {
-                                                qty = 1;
-                                                _controller.text = "1";
-                                                totalPrice =
-                                                    widget.pick.todaysPrice;
-                                              });
-                                            }));
-                                  }
+                                            setState(() {
+                                              qty = 1;
+                                              _controller.text = "1";
+                                              totalPrice = widget.pick.price;
+                                            });
+                                          }));
+                                  // }
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

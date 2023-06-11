@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:farm_in/Pages/buying_page.dart';
 import 'package:farm_in/Pages/portfolio_page.dart';
 import 'package:farm_in/Widgets/appbar.dart';
-import 'package:farm_in/blockchain/web3main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -113,27 +112,27 @@ class MyTabbedView extends StatelessWidget {
 
 Widget ListOfStockes() {
   return FutureBuilder<List<Picks>>(future: (() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('jwtToken');
-      final url = Uri.parse('http://$server/picks/home_page_picks');
-      final res = await http.post(url, body: {"token": token});
+    // try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('jwtToken');
+    final url = Uri.parse('http://$server/picks/home_page_picks');
+    final res = await http.post(url, body: {"token": token});
 
-      if (res.statusCode == 200) {
-        List<dynamic> data = json.decode(res.body);
-        List<Picks> list = [];
-        for (int i = 0; i < data.length; i++) {
-          list.add(Picks.fromJson(data[i]));
-        }
-        print(list);
-        return list;
-      } else {
-        print("errrorrr=================");
+    if (res.statusCode == 200) {
+      List<dynamic> data = json.decode(res.body);
+      List<Picks> list = [];
+      for (int i = 0; i < data.length; i++) {
+        list.add(Picks.fromJson(data[i]));
       }
-    } catch (e) {
-      print(e);
-      print("klwkm--------------------");
+      print(list);
+      return list;
+    } else {
+      print("errrorrr=================");
     }
+    // } catch (e) {
+    //   print(e);
+    //   print("klwkm--------------------");
+    // }
 
     return [] as List<Picks>;
   })(), builder: (context, snapshot) {
@@ -156,17 +155,12 @@ Widget ListOfStockes() {
               child: Card(
                 elevation: 1,
                 child: ListTile(
-                  title: Text(snapshot.data![index].symbol),
+                  title: Text(snapshot.data![index].name),
                   subtitle: Text(snapshot.data![index].name),
-                  trailing: Column(
-                    children: [
-                      Text(
-                        "${snapshot.data![index].todaysPrice} ₹",
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      Text("${snapshot.data![index].todaysChange}% ▲")
-                    ],
+                  trailing: Text(
+                    "${snapshot.data![index].price} ₹",
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

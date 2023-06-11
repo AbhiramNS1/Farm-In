@@ -1,33 +1,27 @@
 class Picks {
   int id;
   String name;
-  String symbol;
-  int todaysPrice;
-  int timeperoid;
-  String todaysChange;
+  int price;
   int? quantity;
   int? holdingsId;
-  int? contractAddress;
   int? timePeroid;
-  int? totalProfit;
+  String? category;
 
-  Picks(
-      {required this.id,
-      required this.name,
-      required this.symbol,
-      required this.timeperoid,
-      required this.todaysPrice,
-      required this.todaysChange,
-      this.quantity,
-      this.holdingsId,
-      this.timePeroid,
-      this.totalProfit});
+  Picks({
+    required this.id,
+    required this.name,
+    required this.price,
+    this.quantity,
+    this.holdingsId,
+    this.category,
+    this.timePeroid,
+  });
 
   int get totalInvested {
     if (quantity == null) {
-      return todaysPrice;
+      return price;
     } else {
-      return todaysPrice * quantity!;
+      return price * quantity!;
     }
   }
 
@@ -35,21 +29,18 @@ class Picks {
     return Picks(
         id: json['id'],
         name: json['name'],
-        symbol: json['symbol'],
-        timeperoid: json['time_peroid'],
-        todaysChange: json["todays_change"],
-        todaysPrice: json["todays_price"]);
+        category: json['category'],
+        quantity: json['qty'],
+        price: json['price']);
   }
   factory Picks.holdingsFromJson(Map<String, dynamic> json) {
     return Picks(
-        id: json['id'],
-        name: json['name'],
-        symbol: json['symbol'],
-        timeperoid: json['time_peroid'],
-        todaysChange: json["todays_change"],
-        todaysPrice: json["todays_price"],
-        quantity: json["qty"],
-        timePeroid: json["time_peroid"],
-        totalProfit: json["profit"]);
+      id: json['id'],
+      name: json['name'],
+      price: double.parse(json['market_price'].toString()).toInt(),
+      quantity: json["qty"],
+      timePeroid: json["time_peroid"],
+      holdingsId: json["h_id"],
+    );
   }
 }

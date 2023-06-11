@@ -44,7 +44,6 @@ farmerRouter.post("/deletePendingRequest",async (req:Request,res)=>{
     res.json(await db.deleteRequests(req.body.id))
 })
 
-
 farmerRouter.post("/new_funding",async (req,res)=>{
     console.log(req.body)
     const result =await db.AddNewFundingRequest(req)

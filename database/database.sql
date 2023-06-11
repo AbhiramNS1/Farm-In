@@ -24,7 +24,7 @@ CREATE TABLE Admin(
     id int PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL
 );
 
 INSERT INTO Admin (name, email, password_hash)
@@ -130,6 +130,8 @@ CREATE TABLE Holdings (
     crop_equity INT,
     date_of_buy Date
 );
+
+insert into Holdings values(1,1,12,1,'2023-02-03');
 
 CREATE TABLE SellRequest (
     id INT PRIMARY KEY AUTO_INCREMENT,

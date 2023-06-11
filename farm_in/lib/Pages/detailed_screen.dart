@@ -38,7 +38,7 @@ class DetailedState extends State<DetailedScreen> {
             "assets/app/icon.png",
             width: 50,
           ),
-          title: Text("${widget.pick.name}(${widget.pick.symbol})"),
+          title: Text("${widget.pick.name}(${widget.pick.name})"),
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Summary'),
@@ -92,47 +92,47 @@ class StateSummary extends State<SummaryView> {
   Widget? analyse() {
     if (mystate == SummaryState.loading) {
       (() async {
-        try {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          String? token = prefs.getString('jwtToken');
-          final url = Uri.parse('http://$server/picks/summary');
-          final res = await http.post(url,
-              body: {"token": token, 'pick_id': widget.pick.id.toString()});
-          if (res.statusCode == 200) {
-            var jsondata = json.decode(res.body);
-            print(jsondata);
-            for (var i in jsondata?[1]) {
-              similarPicks.add(Picks.holdingsFromJson(i));
-            }
-            Map<String, dynamic> data = jsondata?[0] ?? {};
-            if (data != null) {
-              setState(() {
-                mystate = SummaryState.finished;
-                farmer = data["farmer"];
-                totalArea = data["area"];
-                address = data["address"];
-                totalCropQtyAvailable = data["total_qty"];
-                totalAmountRequested = data["total_amount"];
-                latitude = data["latitude"];
-                longitude = data["longitude"];
-              });
-            }
-          } else {
-            setState(() {
-              mystate = SummaryState.failed;
-            });
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('Invalid request')));
+        // try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('jwtToken');
+        final url = Uri.parse('http://$server/picks/summary');
+        final res = await http.post(url,
+            body: {"token": token, 'pick_id': widget.pick.id.toString()});
+        if (res.statusCode == 200) {
+          var jsondata = json.decode(res.body);
+          print(jsondata);
+          for (var i in jsondata?[1]) {
+            similarPicks.add(Picks.holdingsFromJson(i));
           }
-        } catch (e) {
-          print(e);
+          Map<String, dynamic> data = jsondata?[0] ?? {};
+          if (data != null) {
+            setState(() {
+              mystate = SummaryState.finished;
+              farmer = data["farmer"];
+              totalArea = data["area"];
+              address = data["address"];
+              totalCropQtyAvailable = data["total_qty"];
+              totalAmountRequested = data["total_amount"];
+              latitude = data["latitude"];
+              longitude = data["longitude"];
+            });
+          }
+        } else {
           setState(() {
             mystate = SummaryState.failed;
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Unable to reach server')),
-          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Invalid request')));
         }
+        // } catch (e) {
+        //   print(e);
+        //   setState(() {
+        //     mystate = SummaryState.failed;
+        //   });
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(content: Text('Unable to reach server')),
+        //   );
+        // }
       })();
 
       return const Center(
@@ -201,7 +201,6 @@ class StateSummary extends State<SummaryView> {
               InfoRow("Total Quantity  :  ", widget.pick.quantity.toString()),
               InfoRow("Total Amount Invested  :  ",
                   "${widget.pick.totalInvested} ₹"),
-              InfoRow("Total Profit  :  ", "${widget.pick.totalProfit} ₹"),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                 padding: EdgeInsets.all(20),
@@ -254,7 +253,9 @@ class StateSummary extends State<SummaryView> {
                 child: TextButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (cxt) => SellRequestPage()));
+                          builder: (cxt) => SellRequestPage(
+                                pick: widget.pick,
+                              )));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -352,7 +353,7 @@ class ScrollCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "${pick.todaysChange}% ▲",
+              "${pick.price}% ▲",
               style: TextStyle(fontWeight: FontWeight.w900, fontSize: 26),
             ),
           ),

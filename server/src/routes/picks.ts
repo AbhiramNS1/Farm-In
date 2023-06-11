@@ -26,7 +26,7 @@ picksRouter.post("/other_similar",async (req,res)=>{
 })
 
 picksRouter.post("/buy",async (req:Request,res)=>{
-    res.json(await db.buy(req,req.body.pick_id,req.body.qty))
+    res.json(await db.buy(req,req.body.qty,req.body.crop_id))
 })
 picksRouter.post("/details",async (req,res)=>{
     res.json(await db.getDetails(req.body.pick_id))
