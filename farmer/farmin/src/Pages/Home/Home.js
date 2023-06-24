@@ -531,7 +531,7 @@ function MyFarmLands(){
         borderRadius:'5px',
         padding:'10px',display:'flex',justifyContent:'space-between',alignItems:'center',margin:'5px'}}>
           <div>
-      <b>Address</b> : <i> {e.address}</i>
+      <b>Address</b> : <i> {e.label}</i>
        <br/>
        <b>Total Area</b>: <i>{e.area}</i>
        <br/>

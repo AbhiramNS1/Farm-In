@@ -1,3 +1,3 @@
-const Config= {SERVER:"http://192.168.31.100:5000"}
+const Config= {SERVER:"https://jerihub.cf/farmin"}
 
 export default Config

@@ -35,7 +35,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 ));
       }
       return;
-    }
+    } else
+      print("Selected file is not null");
 
     // Create a multipart request
     var request =

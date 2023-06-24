@@ -4,6 +4,7 @@ import picksRouter from './routes/picks.js'
 import farmerRouter from './routes/farmer.js'
 import cors from 'cors'
 import empRouter from './routes/employee.js'
+import db from './libs/database.js'
 
 
 
@@ -13,9 +14,6 @@ app.use(cors())
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-
-app.use(express.static(`D:/Others/Android/mini project/Farm-In/server/dist/public`));
-
 
 app.use((req,res,next)=>{
     console.log("Request recived ")
@@ -30,9 +28,8 @@ app.use("/admin",empRouter)
 
 
 
-
-
-const port = process.env.PORT || 5000
-app.listen(port ,()=>{
+const port = 5000
+app.listen(5000 ,()=>{
+    db.getCrops()
     console.log(`Server starte d in prt ${port}`)
 })

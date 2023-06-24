@@ -4,7 +4,6 @@ import { Security, User } from './security.js';
 import { Request } from 'express';
 dotenv.config()
 
-
 class DataBase {
     
     private static instance: DataBase;
@@ -15,6 +14,7 @@ class DataBase {
             DataBase.instance.pool= mysql.createPool({
                 host: process.env.MYSQL_HOST,
                 user: process.env.MYSQL_USER,
+                port:3307,
                 password: process.env.MYSQL_PASSWORD,
                 database: 'FarmIn',
                 connectionLimit: 10,

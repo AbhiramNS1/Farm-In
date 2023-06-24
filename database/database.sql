@@ -99,6 +99,7 @@ CREATE TABLE FundingRequests (
     starting_date DATE,
     ending_date DATE,
     area INT,
+    state varchar(10) default 'pending'
     -- CONSTRAINT fk_farmer FOREIGN KEY (farmer_id) REFERENCES Farmers (id),
     -- CONSTRAINT fk_farmland FOREIGN KEY (farmland_id) REFERENCES FarmLands (id),
     -- CONSTRAINT fk_crop FOREIGN KEY (pick_id) REFERENCES Picks (id),
@@ -137,13 +138,13 @@ CREATE TABLE SellRequest (
     id INT PRIMARY KEY AUTO_INCREMENT,
     investor_id INT,
     qty int,
-    crop_equity INT,
+    crop_equity INT
 );
 
 -- Table: Farmer_history
 CREATE TABLE Farmer_history (
     id INT PRIMARY KEY AUTO_INCREMENT,
     request_id int,
-    profit INT,
+    profit INT
 );
 

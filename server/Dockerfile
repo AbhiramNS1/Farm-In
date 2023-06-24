@@ -6,9 +6,8 @@ COPY package.json .
 
 RUN npm install
 
-COPY . .
-
-ENV PORT = 5000
+COPY dist dist
+COPY .env .
 
 EXPOSE 5000
 

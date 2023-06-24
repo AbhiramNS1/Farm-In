@@ -63,7 +63,7 @@ const AddFarmLand = () => {
                 navigate("/")
         }} />
         <Typography fontSize={30} sx={{margin:"20px"}}>
-            Add a new Crop
+            Add a new FarmLand
         </Typography>
        
     <form onSubmit={handleSubmit}>
