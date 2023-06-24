@@ -12,10 +12,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Config from '../Config'
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+
+  const navigate = useNavigate()
 
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -35,7 +38,12 @@ export default function SignUp() {
       method:'POST',
       body :data
     })
-    console.log(await res.json())
+    console.log()
+    const result = await res.json();
+    if(result.status){
+        navigate("/")
+    }
+
   };
 
   return (
